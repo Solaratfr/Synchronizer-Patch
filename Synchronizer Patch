@@ -1,4 +1,16 @@
-    local Sync = require(game.ReplicatedStorage:WaitForChild("Packages"):WaitForChild("Synchronizer"))
+-- SynchronizerPatch.lua
+local Core = _G.GrimHub
+if not Core then
+    warn("GrimHub core not found! Load main script first.")
+    return
+end
+
+local ReplicatedStorage = Core.ReplicatedStorage
+local RunService = Core.RunService
+
+-- Patch Synchronizer
+local function PatchSynchronizer()
+    local Sync = require(ReplicatedStorage:WaitForChild("Packages"):WaitForChild("Synchronizer"))
     for name, fn in pairs(Sync) do
         if typeof(fn) ~= "function" then continue end
         if isexecutorclosure(fn) then continue end
@@ -22,3 +34,6 @@
             end
         end
     end
+end
+
+task.spawn(PatchSynchronizer)
